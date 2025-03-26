@@ -1,7 +1,5 @@
 # Amazon Clone - Full E-Commerce Website
 
-![Amazon Clone](https://hack44189.github.io/Amazon-Clone---Full-E-Commerce-Website/)
-
 ## 📌 Live Preview
 
 Check out the live preview of the project [here](https://hack44189.github.io/Amazon-Clone---Full-E-Commerce-Website/).
