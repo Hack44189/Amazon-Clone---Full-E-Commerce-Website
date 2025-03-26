@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Clone - Online Shopping</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #EAEDED;
+        }
+        
+        /* Header Styles */
+        .navbar {
+            background-color: #131921;
+            color: white;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        
+        .nav-logo {
+            width: 100px;
+            margin-right: 10px;
+            min-width: 80px;
+        }
+        
+        .logo {
+            width: 100%;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .deliver-to {
+            display: none; /* Hidden on mobile by default */
+            margin-right: 10px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .location-icon {
+            margin-top: 5px;
+            margin-right: 5px;
+        }
+        
+        .address {
+            font-size: 12px;
+            color: #CCCCCC;
+        }
+        
+        .location {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .search-bar {
+            display: flex;
+            flex: 1;
+            min-width: 100%; /* Full width on mobile */
+            margin: 10px 0;
+            order: 1; /* Move to bottom on mobile */
+        }
+        
+        .search-select {
+            background-color: #F3F3F3;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            padding: 8px;
+            font-size: 12px;
+            color: #555;
+            border-right: 1px solid #DDD;
+            display: none; /* Hidden on mobile */
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            font-size: 14px;
+        }
+        
+        .search-icon {
+            background-color: #FEBD69;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            min-width: 45px;
+        }
+        
+        .nav-right {
+            display: flex;
+            margin-left: auto;
+        }
+        
+        .nav-item {
+            margin-left: 10px;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 12px;
+        }
+        
+        .nav-item:hover {
+            outline: 1px solid white;
+        }
+        
+        .nav-item p {
+            font-size: 10px;
+        }
+        
+        .nav-item h4 {
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .cart {
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .cart-icon {
+            font-size: 24px;
+        }
+        
+        .cart-count {
+            color: #F08804;
+            font-weight: bold;
+            margin-left: 3px;
+            font-size: 14px;
+        }
+        
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        /* Sub Navbar */
+        .sub-nav {
+            background-color: #232F3E;
+            color: white;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .sub-nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .menu {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .menu:hover {
+            outline: 1px solid white;
+        }
+        
+        .menu-icon {
+            margin-right: 5px;
+        }
+        
+        .sub-nav-items {
+            display: flex;
+            flex: 1;
+        }
+        
+        .sub-nav-item {
+            margin-right: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .sub-nav-item:hover {
+            outline: 1px solid white;
+        }
+        
+        .prime-deal {
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 10px;
+        }
+        
+        .prime-deal:hover {
+            outline: 1px solid white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 150px;
+            background-image: url('https://m.media-amazon.com/images/I/61DUO0NqyyL._SX3000_.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        
+        /* Shop Section */
+        .shop-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 0 5px;
+        }
+        
+        .box {
+            background-color: white;
+            width: 48%;
+            padding: 15px 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .box:hover {
+            transform: scale(1.02);
+        }
+        
+        .box-img {
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 10px;
+        }
+        
+        .box-content h2 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .box-content p {
+            color: #007185;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: #B12704;
+            font-size: 14px;
+        }
+        
+        /* Product Detail Page */
+        .product-detail {
+            display: none;
+            background-color: white;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        
+        .product-detail.active {
+            display: block;
+        }
+        
+        .product-main {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-images {
+            width: 100%;
+            padding: 10px;
+        }
+        
+        .product-main-image {
+            width: 100%;
+            height: 250px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 10px;
+        }
+        
+        .product-thumbnails {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        
+        .product-thumbnail {
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            border: 1px solid #DDD;
+            flex-shrink: 0;
+        }
+        
+        .product-thumbnail:hover {
+            border-color: #F08804;
+        }
+        
+        .product-info {
+            width: 100%;
+            padding: 10px;
+        }
+        
+        .product-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .product-rating {
+            color: #FFA41C;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .product-price {
+            font-size: 22px;
+            color: #B12704;
+            margin-bottom: 15px;
+        }
+        
+        .product-stock {
+            color: #007600;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .product-description {
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .add-to-cart, .buy-now {
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            border: none;
+            flex: 1;
+        }
+        
+        .add-to-cart {
+            background-color: #FFD814;
+        }
+        
+        .buy-now {
+            background-color: #FFA41C;
+        }
+        
+        .back-to-products {
+            display: block;
+            margin-top: 15px;
+            color: #007185;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        
+        /* Profile Page */
+        .profile-page {
+            display: none;
+            background-color: white;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        
+        .profile-page.active {
+            display: block;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #F08804;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .profile-name {
+            font-size: 18px;
+        }
+        
+        .profile-email {
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .profile-sections {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-nav {
+            width: 100%;
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .profile-nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .profile-nav-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        
+        .profile-nav-item.active {
+            border-bottom: 3px solid #F08804;
+            font-weight: bold;
+        }
+        
+        .profile-content {
+            width: 100%;
+            padding: 5px;
+        }
+        
+        .profile-section {
+            display: none;
+        }
+        
+        .profile-section.active {
+            display: block;
+        }
+        
+        .order-item {
+            border: 1px solid #DDD;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .order-date {
+            color: #555;
+            font-size: 12px;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .order-status {
+            color: #007600;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .order-product {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        
+        .order-product-img {
+            width: 60px;
+            height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-right: 10px;
+        }
+        
+        .order-product-info {
+            flex: 1;
+        }
+        
+        .order-product-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .order-product-price {
+            font-size: 14px;
+        }
+        
+        .order-actions {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .order-action-btn {
+            padding: 5px 8px;
+            background-color: #F7FAFA;
+            border: 1px solid #DDD;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        /* Cart Page */
+        .cart-page {
+            display: none;
+            background-color: white;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        
+        .cart-page.active {
+            display: block;
+        }
+        
+        .cart-header {
+            font-size: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #DDD;
+            padding-bottom: 8px;
+        }
+        
+        .cart-container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cart-items {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .cart-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #DDD;
+        }
+        
+        .cart-item-img {
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-right: 10px;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-title {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .cart-item-price {
+            color: #B12704;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .cart-item-stock {
+            color: #007600;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .cart-item-quantity {
+            width: 50px;
+            padding: 5px;
+            margin-right: 8px;
+            text-align: center;
+        }
+        
+        .cart-item-delete {
+            color: #007185;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 12px;
+        }
+        
+        .cart-summary {
+            width: 100%;
+            padding: 10px;
+            background-color: #F7FAFA;
+            border-radius: 5px;
+        }
+        
+        .cart-total {
+            padding: 15px;
+        }
+        
+        .cart-total-header {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .cart-total-price {
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 8px;
+            border-top: 1px solid #DDD;
+            padding-top: 8px;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #FFD814;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #131921;
+            color: white;
+            padding: 20px 0;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+        
+        .footer-column {
+            width: 45%;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #DDD;
+            cursor: pointer;
+        }
+        
+        .footer-bottom {
+            background-color: #0F1111;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 10px;
+        }
+        
+        /* Media Queries for Responsive Design */
+        @media (min-width: 480px) {
+            .box {
+                width: 48%;
+            }
+            
+            .deliver-to {
+                display: flex;
+            }
+            
+            .search-select {
+                display: block;
+            }
+            
+            .search-bar {
+                min-width: auto;
+                order: 0;
+                margin: 0 10px 0 0;
+            }
+        }
+        
+        @media (min-width: 600px) {
+            .hero {
+                height: 200px;
+            }
+            
+            .box {
+                width: 31%;
+            }
+            
+            .profile-nav {
+                flex-direction: column;
+                width: 25%;
+                overflow-x: visible;
+            }
+            
+            .profile-nav-item {
+                border-left: 3px solid transparent;
+                border-bottom: none;
+                text-align: left;
+            }
+            
+            .profile-nav-item.active {
+                border-left: 3px solid #F08804;
+                border-bottom: none;
+            }
+            
+            .profile-sections {
+                flex-direction: row;
+            }
+            
+            .profile-content {
+                width: 75%;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+                flex-wrap: nowrap;
+            }
+            
+            .nav-logo {
+                width: 100px;
+                margin-right: 20px;
+            }
+            
+            .deliver-to {
+                margin-right: 20px;
+            }
+            
+            .nav-item {
+                margin-left: 20px;
+                font-size: 14px;
+            }
+            
+            .nav-item p {
+                font-size: 12px;
+            }
+            
+            .nav-item h4 {
+                font-size: 14px;
+            }
+            
+            .hero {
+                height: 250px;
+            }
+            
+            .box {
+                width: 23%;
+            }
+            
+            .product-main {
+                flex-direction: row;
+            }
+            
+            .product-images {
+                width: 40%;
+            }
+            
+            .product-info {
+                width: 60%;
+            }
+            
+            .cart-container {
+                flex-direction: row;
+            }
+            
+            .cart-items {
+                width: 70%;
+                margin-bottom: 0;
+            }
+            
+            .cart-summary {
+                width: 30%;
+                padding-left: 15px;
+            }
+            
+            .footer-column {
+                width: 22%;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .hero {
+                height: 300px;
+            }
+            
+            .box-img {
+                height: 150px;
+            }
+            
+            .product-main-image {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <div class="navbar">
+        <button class="mobile-menu-btn">☰</button>
+        
+        <div class="nav-logo" onclick="showHomePage()">
+            <img class="logo" src="https://pngimg.com/uploads/amazon/amazon_PNG11.png" alt="Amazon Logo">
+        </div>
+        
+        <div class="deliver-to">
+            <div class="location-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                </svg>
+            </div>
+            <div class="address">
+                <p>Deliver to</p>
+                <h4 class="location">India</h4>
+            </div>
+        </div>
+        
+        <div class="search-bar">
+            <select class="search-select">
+                <option>All</option>
+                <option>Electronics</option>
+                <option>Fashion</option>
+                <option>Home & Kitchen</option>
+                <option>Books</option>
+            </select>
+            <input type="text" class="search-input" placeholder="Search Amazon.in">
+            <div class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="nav-right">
+            <div class="nav-item" onclick="showProfilePage()">
+                <p>Hello, Sign in</p>
+                <h4>Account & Lists</h4>
+            </div>
+            
+            <div class="nav-item">
+                <p>Returns</p>
+                <h4>& Orders</h4>
+            </div>
+            
+            <div class="nav-item cart" onclick="showCartPage()">
+                <div class="cart-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                </div>
+                <p class="cart-count">0</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sub Navbar -->
+    <div class="sub-nav">
+        <div class="menu">
+            <div class="menu-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+            </div>
+            <h4>All</h4>
+        </div>
+        
+        <div class="sub-nav-items">
+            <div class="sub-nav-item">Today's Deals</div>
+            <div class="sub-nav-item">Customer Service</div>
+            <div class="sub-nav-item">Registry</div>
+            <div class="sub-nav-item">Gift Cards</div>
+            <div class="sub-nav-item">Sell</div>
+        </div>
+        
+        <div class="prime-deal">Shop deals in Electronics</div>
+    </div>
+    
+    <!-- Main Content Area -->
+    <div id="home-page">
+        <!-- Hero Section -->
+        <div class="hero"></div>
+        
+        <!-- Shop Section -->
+        <div class="shop-section">
+            <div class="box" onclick="showProductDetail('product1')">
+                <div class="box-img" style="background-image: url('https://m.media-amazon.com/images/I/61lJ3xlQXwL._AC_SY200_.jpg');"></div>
+                <div class="box-content">
+                    <h2>Wireless Earbuds</h2>
+                    <p>Premium sound quality with noise cancellation</p>
+                    <p class="product-price">₹2,499</p>
+                </div>
+            </div>
+            
+            <div class="box" onclick="showProductDetail('product2')">
+                <div class="box-img" style="background-image: url('https://m.media-amazon.com/images/I/71hmqIQJFdL._AC_SY200_.jpg');"></div>
+                <div class="box-content">
+                    <h2>Smart Watch</h2>
+                    <p>Fitness tracker with heart rate monitor</p>
+                    <p class="product-price">₹3,999</p>
+                </div>
+            </div>
+            
+            <div class="box" onclick="showProductDetail('product3')">
+                <div class="box-img" style="background-image: url('https://m.media-amazon.com/images/I/61Ly9zlsA6L._AC_SY200_.jpg');"></div>
+                <div class="box-content">
+                    <h2>Bluetooth Speaker</h2>
+                    <p>Portable speaker with 20hrs battery life</p>
+                    <p class="product-price">₹1,799</p>
+                </div>
+            </div>
+            
+            <div class="box" onclick="showProductDetail('product4')">
+                <div class="box-img" style="background-image: url('https://m.media-amazon.com/images/I/71hmqIQJFdL._AC_SY200_.jpg');"></div>
+                <div class="box-content">
+                    <h2>Power Bank</h2>
+                    <p>20000mAh with fast charging</p>
+                    <p class="product-price">₹1,299</p>
+                </div>
+            </div>
+            
+            <div class="box" onclick="showProductDetail('product5')">
+                <div class="box-img" style="background-image: url('https://m.media-amazon.com/images/I/61Ly9zlsA6L._AC_SY200_.jpg');"></div>
+                <div class="box-content">
+                    <h2>Laptop Backpack</h2>
+                    <p>Water resistant with USB charging port</p>
+                    <p class="product-price">₹999</p>
+                </div>
+            </div>
+            
+            <div class="box" onclick="showProductDetail('product6')">
+                <div class="box-img" style="background-image: url('https://m.media-amazon.com/images/I/61lJ3xlQXwL._AC_SY200_.jpg');"></div>
+                <div class="box-content">
+                    <h2>Wireless Mouse</h2>
+                    <p>Ergonomic design with silent click</p>
+                    <p class="product-price">₹599</p>
+                </div>
+            </div>
+            
+            <div class="box" onclick="showProductDetail('product7')">
+                <div class="box-img" style="background-image: url('https://m.media-amazon.com/images/I/71hmqIQJFdL._AC_SY200_.jpg');"></div>
+                <div class="box-content">
+                    <h2>Desk Lamp</h2>
+                    <p>Adjustable with 3 color temperatures</p>
+                    <p class="product-price">₹1,499</p>
+                </div>
+            </div>
+            
+            <div class="box" onclick="showProductDetail('product8')">
+                <div class="box-img" style="background-image: url('https://m.media-amazon.com/images/I/61Ly9zlsA6L._AC_SY200_.jpg');"></div>
+                <div class="box-content">
+                    <h2>Air Fryer</h2>
+                    <p>4.2L capacity with digital display</p>
+                    <p class="product-price">₹3,499</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Product Detail Page -->
+    <div class="product-detail" id="product-detail">
+        <div class="product-main" id="product-main">
+            <!-- Product content will be inserted here by JavaScript -->
+        </div>
+        <a class="back-to-products" onclick="showHomePage()">← Back to products</a>
+    </div>
+    
+    <!-- Profile Page -->
+    <div class="profile-page" id="profile-page">
+        <div class="profile-header">
+            <div class="profile-icon">U</div>
+            <div>
+                <div class="profile-name">User Name</div>
+                <div class="profile-email">user@example.com</div>
+            </div>
+        </div>
+        
+        <div class="profile-sections">
+            <div class="profile-nav">
+                <div class="profile-nav-item active" onclick="showProfileSection('orders')">Your Orders</div>
+                <div class="profile-nav-item" onclick="showProfileSection('security')">Login & Security</div>
+                <div class="profile-nav-item" onclick="showProfileSection('addresses')">Your Addresses</div>
+                <div class="profile-nav-item" onclick="showProfileSection('payments')">Payment Options</div>
+            </div>
+            
+            <div class="profile-content">
+                <div class="profile-section active" id="orders-section">
+                    <h2>Your Orders</h2>
+                    <div class="order-item">
+                        <div class="order-header">
+                            <div class="order-date">Order placed on June 15, 2023</div>
+                            <div class="order-status">Delivered on June 18, 2023</div>
+                        </div>
+                        <div class="order-product">
+                            <div class="order-product-img" style="background-image: url('https://m.media-amazon.com/images/I/61lJ3xlQXwL._AC_SY200_.jpg');"></div>
+                            <div class="order-product-info">
+                                <div class="order-product-title">Wireless Earbuds - Premium sound quality with noise cancellation</div>
+                                <div>Quantity: 1</div>
+                                <div class="order-product-price">₹2,499</div>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="order-action-btn">Buy it again</button>
+                            <button class="order-action-btn">View your item</button>
+                            <button class="order-action-btn">Write a product review</button>
+                        </div>
+                    </div>
+                    
+                    <div class="order-item">
+                        <div class="order-header">
+                            <div class="order-date">Order placed on June 10, 2023</div>
+                            <div class="order-status">Delivered on June 12, 2023</div>
+                        </div>
+                        <div class="order-product">
+                            <div class="order-product-img" style="background-image: url('https://m.media-amazon.com/images/I/71hmqIQJFdL._AC_SY200_.jpg');"></div>
+                            <div class="order-product-info">
+                                <div class="order-product-title">Smart Watch - Fitness tracker with heart rate monitor</div>
+                                <div>Quantity: 1</div>
+                                <div class="order-product-price">₹3,999</div>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="order-action-btn">Buy it again</button>
+                            <button class="order-action-btn">View your item</button>
+                            <button class="order-action-btn">Write a product review</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-section" id="security-section">
+                    <h2>Login & Security</h2>
+                    <p>Name: User Name</p>
+                    <p>Email: user@example.com</p>
+                    <p>Mobile: +91 9876543210</p>
+                    <button class="order-action-btn">Edit</button>
+                </div>
+                
+                <div class="profile-section" id="addresses-section">
+                    <h2>Your Addresses</h2>
+                    <div style="border: 1px solid #DDD; padding: 15px; margin-bottom: 15px;">
+                        <h3>Default Address</h3>
+                        <p>User Name</p>
+                        <p>123, Main Street</p>
+                        <p>Bangalore, Karnataka 560001</p>
+                        <p>India</p>
+                        <p>Phone: +91 9876543210</p>
+                        <button class="order-action-btn">Edit</button>
+                    </div>
+                </div>
+                
+                <div class="profile-section" id="payments-section">
+                    <h2>Payment Options</h2>
+                    <div style="border: 1px solid #DDD; padding: 15px; margin-bottom: 15px;">
+                        <h3>Credit/Debit Card</h3>
+                        <p>VISA ending with 1234</p>
+                        <p>Expires 12/2025</p>
+                        <button class="order-action-btn">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <a class="back-to-products" onclick="showHomePage()">← Back to home</a>
+    </div>
+    
+    <!-- Cart Page -->
+    <div class="cart-page" id="cart-page">
+        <div class="cart-header">Shopping Cart</div>
+        
+        <div class="cart-container">
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be inserted here by JavaScript -->
+                <p>Your Amazon Cart is empty</p>
+            </div>
+            
+            <div class="cart-summary">
+                <div class="cart-total">
+                    <div class="cart-total-header">Order Summary</div>
+                    <div class="cart-total-row">
+                        <span>Items (0):</span>
+                        <span>₹0</span>
+                    </div>
+                    <div class="cart-total-row">
+                        <span>Delivery:</span>
+                        <span>₹0</span>
+                    </div>
+                    <div class="cart-total-price">
+                        <span>Order Total:</span>
+                        <span>₹0</span>
+                    </div>
+                    <button class="checkout-btn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+        
+        <a class="back-to-products" onclick="showHomePage()">← Back to products</a>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Get to Know Us</h3>
+                <ul>
+                    <li>About Us</li>
+                    <li>Careers</li>
+                    <li>Press Releases</li>
+                    <li>Amazon Science</li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Connect with Us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Twitter</li>
+                    <li>Instagram</li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Make Money with Us</h3>
+                <ul>
+                    <li>Sell on Amazon</li>
+                    <li>Sell under Amazon Accelerator</li>
+                    <li>Become an Affiliate</li>
+                    <li>Advertise Your Products</li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Let Us Help You</h3>
+                <ul>
+                    <li>COVID-19 and Amazon</li>
+                    <li>Your Account</li>
+                    <li>Returns Centre</li>
+                    <li>100% Purchase Protection</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>Conditions of Use & Sale | Privacy Notice | Interest-Based Ads</p>
+            <p>© 1996-2023, Amazon.com, Inc. or its affiliates</p>
+        </div>
+    </div>
+    
+    <script>
+        // Product data
+        const products = {
+            product1: {
+                id: 'product1',
+                title: 'Wireless Earbuds',
+                description: 'Premium sound quality with active noise cancellation. These wireless earbuds feature 30 hours of battery life with the charging case, IPX5 water resistance, and touch controls. Perfect for workouts, commuting, or just enjoying your favorite music.',
+                price: '₹2,499',
+                rating: '★★★★★',
+                images: [
+                    'https://m.media-amazon.com/images/I/61lJ3xlQXwL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71QYwQ7KQVL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71UxSHkMqWL._AC_SL1500_.jpg'
+                ],
+                stock: 'In stock'
+            },
+            product2: {
+                id: 'product2',
+                title: 'Smart Watch',
+                description: 'Fitness tracker with heart rate monitor, blood oxygen monitor, and sleep tracking. This smartwatch features a 1.4-inch AMOLED display, 10-day battery life, and supports multiple sports modes. Stay connected with call and message notifications.',
+                price: '₹3,999',
+                rating: '★★★★☆',
+                images: [
+                    'https://m.media-amazon.com/images/I/71hmqIQJFdL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71eMvXJZ+VL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71+8ZJZ+ZVL._AC_SL1500_.jpg'
+                ],
+                stock: 'In stock'
+            },
+            product3: {
+                id: 'product3',
+                title: 'Bluetooth Speaker',
+                description: 'Portable speaker with 20 hours of battery life and IPX7 waterproof rating. This speaker delivers powerful 20W stereo sound with deep bass. Perfect for outdoor adventures with its rugged design and built-in microphone for hands-free calls.',
+                price: '₹1,799',
+                rating: '★★★★★',
+                images: [
+                    'https://m.media-amazon.com/images/I/61Ly9zlsA6L._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71eMvXJZ+VL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71+8ZJZ+ZVL._AC_SL1500_.jpg'
+                ],
+                stock: 'Only 5 left in stock'
+            },
+            product4: {
+                id: 'product4',
+                title: 'Power Bank',
+                description: '20000mAh power bank with 18W fast charging and dual USB ports. This portable charger can charge your smartphone up to 4 times and features smart safety protections to prevent overcharging, overheating, and short circuits.',
+                price: '₹1,299',
+                rating: '★★★★☆',
+                images: [
+                    'https://m.media-amazon.com/images/I/71hmqIQJFdL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71eMvXJZ+VL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71+8ZJZ+ZVL._AC_SL1500_.jpg'
+                ],
+                stock: 'In stock'
+            },
+            product5: {
+                id: 'product5',
+                title: 'Laptop Backpack',
+                description: 'Water-resistant backpack with USB charging port and anti-theft design. This backpack features a dedicated laptop compartment that fits up to 15.6-inch laptops, multiple pockets for organization, and comfortable padded shoulder straps.',
+                price: '₹999',
+                rating: '★★★★★',
+                images: [
+                    'https://m.media-amazon.com/images/I/61Ly9zlsA6L._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71eMvXJZ+VL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71+8ZJZ+ZVL._AC_SL1500_.jpg'
+                ],
+                stock: 'In stock'
+            },
+            product6: {
+                id: 'product6',
+                title: 'Wireless Mouse',
+                description: 'Ergonomic wireless mouse with silent click technology and 2.4GHz USB receiver. This mouse features 1600 DPI optical tracking, 12-month battery life, and comfortable contoured design for right-handed users. Works on most surfaces.',
+                price: '₹599',
+                rating: '★★★★☆',
+                images: [
+                    'https://m.media-amazon.com/images/I/61lJ3xlQXwL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71QYwQ7KQVL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71UxSHkMqWL._AC_SL1500_.jpg'
+                ],
+                stock: 'In stock'
+            },
+            product7: {
+                id: 'product7',
+                title: 'Desk Lamp',
+                description: 'Adjustable LED desk lamp with 3 color temperatures and 5 brightness levels. This eye-care lamp features a flexible gooseneck design, touch control panel, and USB charging port. Perfect for reading, working, or studying.',
+                price: '₹1,499',
+                rating: '★★★★★',
+                images: [
+                    'https://m.media-amazon.com/images/I/71hmqIQJFdL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71eMvXJZ+VL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71+8ZJZ+ZVL._AC_SL1500_.jpg'
+                ],
+                stock: 'Only 2 left in stock'
+            },
+            product8: {
+                id: 'product8',
+                title: 'Air Fryer',
+                description: '4.2L digital air fryer with 8 preset cooking functions and 60-minute timer. This air fryer uses rapid air technology to fry foods with little to no oil, reducing fat content by up to 85%. Features a non-stick basket and dishwasher-safe parts.',
+                price: '₹3,499',
+                rating: '★★★★☆',
+                images: [
+                    'https://m.media-amazon.com/images/I/61Ly9zlsA6L._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71eMvXJZ+VL._AC_SL1500_.jpg',
+                    'https://m.media-amazon.com/images/I/71+8ZJZ+ZVL._AC_SL1500_.jpg'
+                ],
+                stock: 'In stock'
+            }
+        };
+        
+        // Cart data
+        let cart = [];
+        
+        // Current page state
+        let currentPage = 'home';
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            showHomePage();
+            
+            // Add to cart functionality for each box
+            const boxes = document.querySelectorAll('.box');
+            const cartCount = document.querySelector('.cart-count');
+            
+            boxes.forEach(box => {
+                box.addEventListener('click', function(e) {
+                    // Prevent adding to cart when clicking on the box (we'll handle product detail)
+                    e.stopPropagation();
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.querySelector('.search-input');
+            const searchIcon = document.querySelector('.search-icon');
+            
+            searchIcon.addEventListener('click', function() {
+                if(searchInput.value.trim() !== '') {
+                    alert('Searching for: ' + searchInput.value);
+                }
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if(e.key === 'Enter' && searchInput.value.trim() !== '') {
+                    alert('Searching for: ' + searchInput.value);
+                }
+            });
+            
+            // Mobile menu button
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            mobileMenuBtn.addEventListener('click', function() {
+                alert('Mobile menu would open here');
+            });
+        });
+        
+        // Show home page
+        function showHomePage() {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('product-detail').classList.remove('active');
+            document.getElementById('profile-page').classList.remove('active');
+            document.getElementById('cart-page').classList.remove('active');
+            currentPage = 'home';
+        }
+        
+        // Show product detail page
+        function showProductDetail(productId) {
+            const product = products[productId];
+            const productDetail = document.getElementById('product-detail');
+            const productMain = document.getElementById('product-main');
+            
+            // Build product detail HTML
+            productMain.innerHTML = `
+                <div class="product-images">
+                    <div class="product-main-image" style="background-image: url('${product.images[0]}')"></div>
+                    <div class="product-thumbnails">
+                        ${product.images.map(img => `
+                            <div class="product-thumbnail" style="background-image: url('${img}')" 
+                                 onclick="changeProductImage('${img}')"></div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h1 class="product-title">${product.title}</h1>
+                    <div class="product-rating">${product.rating}</div>
+                    <div class="product-price">${product.price}</div>
+                    <div class="product-stock">${product.stock}</div>
+                    <div class="product-description">
+                        <p>${product.description}</p>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart" onclick="addToCart('${productId}')">Add to Cart</button>
+                        <button class="buy-now" onclick="buyNow('${productId}')">Buy Now</button>
+                    </div>
+                </div>
+            `;
+            
+            // Hide other pages and show product detail
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('profile-page').classList.remove('active');
+            document.getElementById('cart-page').classList.remove('active');
+            productDetail.classList.add('active');
+            currentPage = 'product';
+        }
+        
+        // Change product image when thumbnail is clicked
+        function changeProductImage(imgUrl) {
+            const mainImage = document.querySelector('.product-main-image');
+            mainImage.style.backgroundImage = `url('${imgUrl}')`;
+        }
+        
+        // Add product to cart
+        function addToCart(productId) {
+            const product = products[productId];
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    title: product.title,
+                    price: product.price,
+                    image: product.images[0],
+                    quantity: 1
+                });
+            }
+            
+            updateCartCount();
+            alert(`${product.title} added to cart`);
+        }
+        
+        // Buy now function
+        function buyNow(productId) {
+            addToCart(productId);
+            showCartPage();
+        }
+        
+        // Update cart count in navbar
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.querySelector('.cart-count').textContent = count;
+        }
+        
+        // Show cart page
+        function showCartPage() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.querySelector('.cart-total-price span:last-child');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>Your Amazon Cart is empty</p>';
+                cartTotal.textContent = '₹0';
+            } else {
+                // Calculate total
+                const total = cart.reduce((sum, item) => {
+                    const price = parseInt(item.price.replace(/[^0-9]/g, ''));
+                    return sum + (price * item.quantity);
+                }, 0);
+                
+                // Format total with Indian Rupee symbol
+                const formattedTotal = '₹' + total.toLocaleString('en-IN');
+                
+                // Build cart items HTML
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item" data-id="${item.id}">
+                        <div class="cart-item-img" style="background-image: url('${item.image}')"></div>
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div class="cart-item-price">${item.price}</div>
+                            <div class="cart-item-stock">In stock</div>
+                            <div class="cart-item-actions">
+                                <select class="cart-item-quantity" onchange="updateQuantity('${item.id}', this.value)">
+                                    ${Array.from({length: 10}, (_, i) => 
+                                        `<option value="${i+1}" ${i+1 === item.quantity ? 'selected' : ''}>${i+1}</option>`
+                                    ).join('')}
+                                </select>
+                                <span class="cart-item-delete" onclick="removeFromCart('${item.id}')">Delete</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Update total
+                cartTotal.textContent = formattedTotal;
+                
+                // Update items count and subtotal
+                document.querySelector('.cart-total-row span:last-child').textContent = 
+                    '₹' + total.toLocaleString('en-IN');
+                document.querySelector('.cart-total-row:first-child span:first-child').textContent = 
+                    `Items (${cart.reduce((count, item) => count + item.quantity, 0)}):`;
+            }
+            
+            // Hide other pages and show cart
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('product-detail').classList.remove('active');
+            document.getElementById('profile-page').classList.remove('active');
+            document.getElementById('cart-page').classList.add('active');
+            currentPage = 'cart';
+        }
+        
+        // Update product quantity in cart
+        function updateQuantity(productId, quantity) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity = parseInt(quantity);
+                updateCartCount();
+                showCartPage(); // Refresh cart to update totals
+            }
+        }
+        
+        // Remove product from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartCount();
+            showCartPage(); // Refresh cart
+        }
+        
+        // Show profile page
+        function showProfilePage() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('product-detail').classList.remove('active');
+            document.getElementById('cart-page').classList.remove('active');
+            document.getElementById('profile-page').classList.add('active');
+            currentPage = 'profile';
+        }
+        
+        // Show profile section
+        function showProfileSection(sectionId) {
+            // Remove active class from all nav items
+            document.querySelectorAll('.profile-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked nav item
+            event.target.classList.add('active');
+            
+            // Hide all sections
+            document.querySelectorAll('.profile-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId + '-section').classList.add('active');
+        }
+    </script>
+</body>
+</html>
